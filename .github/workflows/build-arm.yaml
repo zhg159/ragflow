@@ -22,6 +22,24 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        run: |
+          pip install nltk huggingface-hub
+
+      - name: Download dependencies
+        run: |
+          python download_deps.py
+
+      - name: List downloaded files
+        run: |
+          ls -la *.tar.gz *.jar *.deb *.tiktoken 2>/dev/null || true
+          ls -la nltk_data huggingface.co 2>/dev/null || true
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -31,11 +49,6 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Download dependencies
-        run: |
-          pip install nltk huggingface-hub
-          python download_deps.py
 
       - name: Build deps image
         run: |
