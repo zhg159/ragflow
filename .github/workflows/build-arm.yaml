@@ -52,7 +52,8 @@ jobs:
 
       - name: Build deps image
         run: |
-          docker build -f Dockerfile.deps -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-deps:arm64 .
+          docker build -f Dockerfile.deps -t infiniflow/ragflow_deps:latest .
+          docker tag infiniflow/ragflow_deps:latest ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-deps:arm64
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-deps:arm64
 
       - name: Build main image
